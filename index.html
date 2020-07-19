@@ -9,7 +9,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-        <link rel="stylesheet" href="Assets/fontawesome/fontawesome-free-5.14.0-web/fontawesome-free-5.14.0-web/css/all.min.css">
+    <link rel="stylesheet" href="Assets/fontawesome-free-5.14.0-web/css/all.min.css">
 
     <title>Your Weather Dashboard!</title>
 </head>
@@ -25,8 +25,9 @@
         <div class="col-sm-3">
             <span class="h4" style="margin-left: 10px;">Search for a City:</span>
             <form class="form-inline" style="margin-left: 10px; margin-top: 10px;">
-                <input class="form-control mr-sm-2" type="search" placeholder="" aria-label="Search">
-                <button class="btn btn-primary " type="submit"><i class="fas fa-search" style="color:white;"></i></button>
+                <input id="city-search" class="form-control mr-sm-2" type="search" placeholder="" aria-label="Search">
+                <button id="btn-search" class="btn btn-primary " type="submit"><i class="fas fa-search"
+                        style="color:white;"></i></button>
             </form>
             <div id="city-buttons" style="margin-left: 10px; margin-top: 20px;">
                 <button type="button" class="btn btn-outline-secondary btn-lg btn-block text-left"
@@ -41,10 +42,12 @@
         </div>
         <div class="col-sm-9">
             <div class="row" style="margin-left: 20px;">
-                <div class="card" style=" margin-top: 20px;"> <!--width: 100%; -->
+                <div class="card" style=" margin-top: 20px;">
+                    <!--width: 100%; -->
                     <div class="card-body">
                         <span id="city-name" class="h2">Atlanta (8/15/2019)</span>
-                        <img id="city-icon" src="Assets/icons/sunny.png" style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
+                        <img id="city-icon" src="Assets/weather-icons/sunny.png"
+                            style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
                         <p class="card-text">Temperature: <span id="city-temp">90.9 degF</span></p>
                         <p class="card-text">Humidity: <span id="city-humidity">41%</span></p>
                         <p class="card-text">Wind Speed: <span id="city-wind-speed">4.7 MPH</span></p>
@@ -62,7 +65,8 @@
                     <div class="card text-white bg-primary mb-3">
                         <div class="card-body">
                             <h5 id="day-one-date" class="card-title">8/16/2019</h5>
-                            <img id="day-one-icon" src="Assets/icons/sunny.png" style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
+                            <img id="day-one-icon" src="Assets/weather-icons/sunny.png"
+                                style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
                             <p class="card-text">Temp: <span id="day-one-temp">86.84 degF</span></p>
                             <p class="card-text">Humidity: <span id="day-one-humidity">43%</span></p>
                         </div>
@@ -70,7 +74,8 @@
                     <div class="card text-white bg-primary mb-3">
                         <div class="card-body">
                             <h5 id="day-two-date" class="card-title">8/16/2019</h5>
-                            <img id="day-two-icon" src="Assets/icons/sunny.png" style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
+                            <img id="day-two-icon" src="Assets/weather-icons/sunny.png"
+                                style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
                             <p class="card-text">Temp: <span id="day-two-temp">86.84 degF</span></p>
                             <p class="card-text">Humidity: <span id="day-two-humidity">43%</span></p>
                         </div>
@@ -78,7 +83,8 @@
                     <div class="card text-white bg-primary mb-3">
                         <div class="card-body">
                             <h5 id="day-three-date" class="card-title">8/16/2019</h5>
-                            <img id="day-three-icon" src="Assets/icons/sunny.png" style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
+                            <img id="day-three-icon" src="Assets/weather-icons/sunny.png"
+                                style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
                             <p class="card-text">Temp: <span id="day-three-temp">86.84 degF</span></p>
                             <p class="card-text">Humidity: <span id="day-three-humidity">43%</span></p>
                         </div>
@@ -86,7 +92,8 @@
                     <div class="card text-white bg-primary mb-3">
                         <div class="card-body">
                             <h5 id="day-four-date" class="card-title">8/16/2019</h5>
-                            <img id="day-four-icon" src="Assets/icons/sunny.png" style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
+                            <img id="day-four-icon" src="Assets/weather-icons/sunny.png"
+                                style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
                             <p class="card-text">Temp: <span id="day-four-temp">86.84 degF</span></p>
                             <p class="card-text">Humidity: <span id="day-four-humidity">43%</span></p>
                         </div>
@@ -94,7 +101,8 @@
                     <div class="card text-white bg-primary mb-3">
                         <div class="card-body">
                             <h5 id="day-five-date" class="card-title">8/16/2019</h5>
-                            <img id="day-five-icon" src="Assets/icons/sunny.png" style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
+                            <img id="day-five-icon" src="Assets/weather-icons/sunny.png"
+                                style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
                             <p class="card-text">Temp: <span id="day-five-temp">86.84 degF</span></p>
                             <p class="card-text">Humidity: <span id="day-five-humidity">43%</span></p>
                         </div>
@@ -121,19 +129,53 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
         crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script type="text/javascript">
 
-        $("#btn-search").on("click", function () {
-            // console.log($("#search-term").val());
-            // console.log($("#number-records").val());
-            var searchTerm = $("#search-term").val();
-            var numberRecords = $("#number-records").val();
+
+        function populateData(response) { // populate city name, date, temp, humidity, wind speed, and uv index
+            var day = moment.unix(response.dt);
+            $("#city-name").text(response.name + " (" + (day._d.getMonth()+1) + "/" + day._d.getDate() + "/" + day._d.getFullYear() + ")");
+            $("#city-temp").text(parseInt((response.main.temp - 273.15) * 9 / 5 + 32)); // convert kelvin to F
+            $("#city-humidity").text(parseInt(response.main.humidity));
+            $("#city-wind-speed").text((response.wind.speed * 2.237).toFixed(1)); // meters per second * 2.237 = miles per hour
+            $("#city-icon").attr("src", "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png");
+        }
+
+        function getCityData(citySearch) {
+            var apiKey = "10e276ba99d3e4a1b4c1dd84964c3f93";
+            var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=Atlanta&appid=d85c0fa84df93dc9e2c51749f4580b7e";
+
+            //"api.openweathermap.org/data/2.5/weather?q=Austin&appid=" + "10e276ba99d3e4a1b4c1dd84964c3f93";
 
 
-            var newDiv = $("<div>");
-            var newLink = $("<a>").attr("src", linkURL).text(headlineText);
 
-            $("#articles").append()
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).then(function (response) {
+                console.log(response);
+                //if response is good
+                // if (response.hasProperty) {
+                localStorage.setItem(response.name, JSON.stringify(response));
+                populateData(response);
+
+                // }
+            });
+
+
+        }
+
+
+        $("#btn-search").on("click", function (event) {
+            event.preventDefault();
+            console.log("SEARCHING");
+            var citySearch = $("#city-search").val().trim();
+            if (citySearch != "") {
+                console.log(citySearch);
+                getCityData(citySearch);
+            }
         })
 
 
