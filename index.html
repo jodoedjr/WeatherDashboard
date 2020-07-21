@@ -30,14 +30,14 @@
                         style="color:white;"></i></button>
             </form>
             <div id="city-buttons" style="margin-left: 10px; margin-top: 20px;">
-                <button type="button" class="btn btn-outline-secondary btn-lg btn-block text-left"
-                    style="margin-top: -0px;">Austin</button>
-                <button type="button" class="btn btn-outline-secondary btn-lg btn-block text-left"
+                <!-- <button type="button" class="btn btn-outline-secondary btn-lg btn-block text-left"
+                    style="margin-top: -0px;">Austin</button> -->
+                <!-- <button type="button" class="btn btn-outline-secondary btn-lg btn-block text-left"
                     style="margin-top: -0px;">Chicago</button>
                 <button type="button" class="btn btn-outline-secondary btn-lg btn-block text-left"
                     style="margin-top: -0px;">New York</button>
                 <button type="button" class="btn btn-outline-secondary btn-lg btn-block text-left"
-                    style="margin-top: -0px;">Orlando</button>
+                    style="margin-top: -0px;">Orlando</button> -->
             </div>
         </div>
         <div class="col-sm-9">
@@ -133,51 +133,128 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script type="text/javascript">
 
+        var recentCities = JSON.parse(localStorage.getItem("recentCities")); // array for populating the recent cities buttons
 
         function populateData(response) { // populate city name, date, temp, humidity, wind speed, and uv index
             var day = moment.unix(response.dt);
-            $("#city-name").text(response.name + " (" + (day._d.getMonth()+1) + "/" + day._d.getDate() + "/" + day._d.getFullYear() + ")");
-            $("#city-temp").text(parseInt((response.main.temp - 273.15) * 9 / 5 + 32)); // convert kelvin to F
-            $("#city-humidity").text(parseInt(response.main.humidity));
-            $("#city-wind-speed").text((response.wind.speed * 2.237).toFixed(1)); // meters per second * 2.237 = miles per hour
+            $("#city-name").text(response.name + " (" + (day._d.getMonth() + 1) + "/" + day._d.getDate() + "/" + day._d.getFullYear() + ")");
+            $("#city-temp").text(parseInt((response.main.temp - 273.15) * 9 / 5 + 32) + "°F"); // convert kelvin to F
+            $("#city-humidity").text(parseInt(response.main.humidity) + "%");
+            $("#city-wind-speed").text((response.wind.speed * 2.237).toFixed(1) + "MPH"); // meters per second * 2.237 = miles per hour
             $("#city-icon").attr("src", "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png");
         }
 
+        function populateCityButtons(storedRecentCities){
+            // <button type="button" class="btn btn-outline-secondary btn-lg btn-block text-left"
+            //         style="margin-top: -0px;">Austin</button>
+            $("#city-buttons").empty();
+            for (city of storedRecentCities){ // for each city in the input array
+               var newButton = $("<button>").attr("type", "button").attr("class", "btn btn-outline-secondary btn-lg btn-block text-left").attr("style", "margin-top: 1px;" ).text(city);
+                $("#city-buttons").append(newButton);
+            }
+        }
+
         function getCityData(citySearch) {
-            var apiKey = "10e276ba99d3e4a1b4c1dd84964c3f93";
-            var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=Atlanta&appid=d85c0fa84df93dc9e2c51749f4580b7e";
-
-            //"api.openweathermap.org/data/2.5/weather?q=Austin&appid=" + "10e276ba99d3e4a1b4c1dd84964c3f93";
-
-
-
+            //call ajax and retrieve weather data for city
+            //display city data on dashboard
+            var apiKey = "d85c0fa84df93dc9e2c51749f4580b7e";
+            var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&appid=d85c0fa84df93dc9e2c51749f4580b7e";
             $.ajax({
                 url: queryURL,
                 method: "GET"
             }).then(function (response) {
-                console.log(response);
                 //if response is good
-                // if (response.hasProperty) {
-                localStorage.setItem(response.name, JSON.stringify(response));
-                populateData(response);
+                if (response.hasOwnProperty("name")) {
+                    //localStorage.setItem(response.name, JSON.stringify(response));
+                    populateData(response);
+                    //display city weather quick buttons in button area
+                    // get local storage version of recent cities
+                    var storedRecentCities = JSON.parse(localStorage.getItem("recentCities"));
+                    //prepend the name of the city from this ajax call
+                    if(storedRecentCities === null){// if no locally stored values, set to empty array
+                        storedRecentCities = [];
+                    }
+                    storedRecentCities.unshift(response.name); //prepend the most recent response to the begining of the recent cities array
+                    // fun hashtable implmentation from https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
+                    //filter the array of recent cities for duplicates
+                    var seen = {};
+                    storedRecentCities = storedRecentCities.filter(function (item) {
+                        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+                    });
+                    //store recent cities back in local storage
+                    localStorage.setItem("recentCities", JSON.stringify(storedRecentCities)); 
+                    populateCityButtons(storedRecentCities); // draw city buttons
 
-                // }
+                    //get UV index info
+                    var queryURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" +apiKey+ "&lat="+response.coord.lat+"&lon="+response.coord.lon;
+                    $.ajax({
+                        url: queryURL,
+                        method: "GET"
+                    }).then(function(response){
+                        $("#city-uv-index").text(response.value);
+                        if(response.value >= 8){
+                            $("#city-uv-index").attr("class", "badge badge-danger");
+                        }else if(response.value > 3){
+                            $("#city-uv-index").attr("class", "badge badge-warning");
+                        }else {
+                            $("#city-uv-index").attr("class", "badge badge-sucess");
+                        }
+                    });
+                }
             });
 
 
+
+        }
+        // function getCityData(citySearch) {
+        //     var storedCityData = JSON.parse(localStorage.getItem(citySearch));
+        //     if (!(storedCityData === null)) {//is there a stored record in city?
+        //         var storedDate = moment.unix(storedCityData.dt); // get stored data time
+        //         var currentDate = moment.utc(); // get current utc time
+        //         if (currentDate.diff(storedDate, "minutes") <= 10) { //find the difference in minutes between the stored data time stamp and the current time
+        //             //if data is less than 10 minutes old, use the stored data
+        //             populateData(storedCityData); // populate the dashboard with stored city data
+        //             return;
+        //         }
+        //     }
+        //     //program pointer will reach this point if no data exist locally, or if the data is older than 10 min
+        //     //therfore, call new data
+        //     var apiKey = "d85c0fa84df93dc9e2c51749f4580b7e";
+        //     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&appid=d85c0fa84df93dc9e2c51749f4580b7e";
+        //     $.ajax({
+        //         url: queryURL,
+        //         method: "GET"
+        //     }).then(function (response) {
+        //         console.log("AJAX RESPONSE");
+        //         console.log(response);
+        //         //if response is good
+        //         if (response.hasOwnProperty("name")) {
+        //             localStorage.setItem(response.name, JSON.stringify(response));
+        //             populateData(response);
+
+        //         }
+        //     });
+        // }
+
+        //run this every time the page loads - either pull up most recent city, or default city
+        if(recentCities === null){
+            getCityData("Atlanta");
+        }else{
+            getCityData(recentCities[0]);
         }
 
-
-        $("#btn-search").on("click", function (event) {
+        $("#btn-search").on("click", function (event) { // on search submit
             event.preventDefault();
-            console.log("SEARCHING");
-            var citySearch = $("#city-search").val().trim();
+            var citySearch = $("#city-search").val().trim().toLowerCase();//trim and set to lower case for consistency 
             if (citySearch != "") {
-                console.log(citySearch);
-                getCityData(citySearch);
+                getCityData(citySearch); // get city data
             }
         })
 
+        $("#city-buttons").on("click", function(event){ // on city quick button
+            event.preventDefault();
+            getCityData(event.target.innerHTML.toLowerCase()); // get city data
+        });
 
 
     </script>
