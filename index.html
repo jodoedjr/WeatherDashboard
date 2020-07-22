@@ -64,47 +64,47 @@
                 <div class="card-deck">
                     <div class="card text-white bg-primary mb-3">
                         <div class="card-body">
-                            <h5 id="day-one-date" class="card-title">8/16/2019</h5>
-                            <img id="day-one-icon" src="Assets/weather-icons/sunny.png"
+                            <h5 id="day-1-date" class="card-title">8/16/2019</h5>
+                            <img id="day-1-icon" src="Assets/weather-icons/sunny.png"
                                 style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
-                            <p class="card-text">Temp: <span id="day-one-temp">86.84 degF</span></p>
-                            <p class="card-text">Humidity: <span id="day-one-humidity">43%</span></p>
+                            <p class="card-text">Temp: <span id="day-1-temp">86.84 degF</span></p>
+                            <p class="card-text">Humidity: <span id="day-1-humidity">43%</span></p>
                         </div>
                     </div>
                     <div class="card text-white bg-primary mb-3">
                         <div class="card-body">
-                            <h5 id="day-two-date" class="card-title">8/16/2019</h5>
-                            <img id="day-two-icon" src="Assets/weather-icons/sunny.png"
+                            <h5 id="day-2-date" class="card-title">8/16/2019</h5>
+                            <img id="day-2-icon" src="Assets/weather-icons/sunny.png"
                                 style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
-                            <p class="card-text">Temp: <span id="day-two-temp">86.84 degF</span></p>
-                            <p class="card-text">Humidity: <span id="day-two-humidity">43%</span></p>
+                            <p class="card-text">Temp: <span id="day-2-temp">86.84 degF</span></p>
+                            <p class="card-text">Humidity: <span id="day-2-humidity">43%</span></p>
                         </div>
                     </div>
                     <div class="card text-white bg-primary mb-3">
                         <div class="card-body">
-                            <h5 id="day-three-date" class="card-title">8/16/2019</h5>
-                            <img id="day-three-icon" src="Assets/weather-icons/sunny.png"
+                            <h5 id="day-3-date" class="card-title">8/16/2019</h5>
+                            <img id="day-3-icon" src="Assets/weather-icons/sunny.png"
                                 style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
-                            <p class="card-text">Temp: <span id="day-three-temp">86.84 degF</span></p>
-                            <p class="card-text">Humidity: <span id="day-three-humidity">43%</span></p>
+                            <p class="card-text">Temp: <span id="day-3-temp">86.84 degF</span></p>
+                            <p class="card-text">Humidity: <span id="day-3-humidity">43%</span></p>
                         </div>
                     </div>
                     <div class="card text-white bg-primary mb-3">
                         <div class="card-body">
-                            <h5 id="day-four-date" class="card-title">8/16/2019</h5>
-                            <img id="day-four-icon" src="Assets/weather-icons/sunny.png"
+                            <h5 id="day-4-date" class="card-title">8/16/2019</h5>
+                            <img id="day-4-icon" src="Assets/weather-icons/sunny.png"
                                 style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
-                            <p class="card-text">Temp: <span id="day-four-temp">86.84 degF</span></p>
-                            <p class="card-text">Humidity: <span id="day-four-humidity">43%</span></p>
+                            <p class="card-text">Temp: <span id="day-4-temp">86.84 degF</span></p>
+                            <p class="card-text">Humidity: <span id="day-4-humidity">43%</span></p>
                         </div>
                     </div>
                     <div class="card text-white bg-primary mb-3">
                         <div class="card-body">
-                            <h5 id="day-five-date" class="card-title">8/16/2019</h5>
-                            <img id="day-five-icon" src="Assets/weather-icons/sunny.png"
+                            <h5 id="day-5-date" class="card-title">8/16/2019</h5>
+                            <img id="day-5-icon" src="Assets/weather-icons/sunny.png"
                                 style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
-                            <p class="card-text">Temp: <span id="day-five-temp">86.84 degF</span></p>
-                            <p class="card-text">Humidity: <span id="day-five-humidity">43%</span></p>
+                            <p class="card-text">Temp: <span id="day-5-temp">86.84 degF</span></p>
+                            <p class="card-text">Humidity: <span id="day-5-humidity">43%</span></p>
                         </div>
                     </div>
                 </div>
@@ -138,18 +138,37 @@
         function populateData(response) { // populate city name, date, temp, humidity, wind speed, and uv index
             var day = moment.unix(response.dt);
             $("#city-name").text(response.name + " (" + (day._d.getMonth() + 1) + "/" + day._d.getDate() + "/" + day._d.getFullYear() + ")");
-            $("#city-temp").text(parseInt((response.main.temp - 273.15) * 9 / 5 + 32) + "°F"); // convert kelvin to F
+            $("#city-temp").text(((response.main.temp - 273.15) * 9 / 5 + 32).toFixed(1) + "°F"); // convert kelvin to F
             $("#city-humidity").text(parseInt(response.main.humidity) + "%");
             $("#city-wind-speed").text((response.wind.speed * 2.237).toFixed(1) + "MPH"); // meters per second * 2.237 = miles per hour
             $("#city-icon").attr("src", "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png");
         }
 
-        function populateCityButtons(storedRecentCities){
+        function populate5Day(oneCall) {
+            //next 5 day forecast
+            var dailyForecasts = oneCall.daily;
+            // <div class="card-body">
+            //     <h5 id="day-1-date" class="card-title">8/16/2019</h5>
+            //     <img id="day-1-icon" src="Assets/weather-icons/sunny.png"
+            //         style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
+            //     <p class="card-text">Temp: <span id="day-1-temp">86.84 degF</span></p>
+            //     <p class="card-text">Humidity: <span id="day-1-humidity">43%</span></p>
+            // </div>
+            for (var i = 1; i <= 5; i++) {//loop through each day's forecast and populate
+                var day = moment.unix(dailyForecasts[i - 1].dt);
+                $("#day-" + i + "-date").text((day._d.getMonth() + 1) + "/" + day._d.getDate() + "/" + day._d.getFullYear());
+                $("#day-" + i + "-icon").attr("src", "http://openweathermap.org/img/wn/" + dailyForecasts[i - 1].weather[0].icon + "@2x.png")
+                $("#day-" + i + "-temp").text(((dailyForecasts[i - 1].temp.day - 273.15) * 9 / 5 + 32).toFixed("2") + "°F");
+                $("#day-" + i + "-humidity").text(dailyForecasts[i - 1].humidity + "%");
+            }
+        }
+
+        function populateCityButtons(storedRecentCities) {
             // <button type="button" class="btn btn-outline-secondary btn-lg btn-block text-left"
             //         style="margin-top: -0px;">Austin</button>
             $("#city-buttons").empty();
-            for (city of storedRecentCities){ // for each city in the input array
-               var newButton = $("<button>").attr("type", "button").attr("class", "btn btn-outline-secondary btn-lg btn-block text-left").attr("style", "margin-top: 1px;" ).text(city);
+            for (city of storedRecentCities) { // for each city in the input array
+                var newButton = $("<button>").attr("type", "button").attr("class", "btn btn-outline-secondary btn-lg btn-block text-left").attr("style", "margin-top: 1px;").text(city);
                 $("#city-buttons").append(newButton);
             }
         }
@@ -171,7 +190,7 @@
                     // get local storage version of recent cities
                     var storedRecentCities = JSON.parse(localStorage.getItem("recentCities"));
                     //prepend the name of the city from this ajax call
-                    if(storedRecentCities === null){// if no locally stored values, set to empty array
+                    if (storedRecentCities === null) {// if no locally stored values, set to empty array
                         storedRecentCities = [];
                     }
                     storedRecentCities.unshift(response.name); //prepend the most recent response to the begining of the recent cities array
@@ -182,29 +201,29 @@
                         return seen.hasOwnProperty(item) ? false : (seen[item] = true);
                     });
                     //store recent cities back in local storage
-                    localStorage.setItem("recentCities", JSON.stringify(storedRecentCities)); 
+                    localStorage.setItem("recentCities", JSON.stringify(storedRecentCities));
                     populateCityButtons(storedRecentCities); // draw city buttons
 
-                    //get UV index info
-                    var queryURL = "https://api.openweathermap.org/data/2.5/uvi?appid=" +apiKey+ "&lat="+response.coord.lat+"&lon="+response.coord.lon;
+                    //use lat and lon from current weather ajax call to get onecall info for UV index and 5 day forcast 
+                    //"https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&appid={YOUR API KEY}"
+                    var queryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + response.coord.lat + "&lon=" + response.coord.lon + "&appid=" + apiKey;
                     $.ajax({
                         url: queryURL,
                         method: "GET"
-                    }).then(function(response){
-                        $("#city-uv-index").text(response.value);
-                        if(response.value >= 8){
+                    }).then(function (oneCall) {
+                        $("#city-uv-index").text(oneCall.current.uvi);
+                        if (oneCall.current.uvi >= 8) {
                             $("#city-uv-index").attr("class", "badge badge-danger");
-                        }else if(response.value > 3){
+                        } else if (oneCall.value > 3) {
                             $("#city-uv-index").attr("class", "badge badge-warning");
-                        }else {
-                            $("#city-uv-index").attr("class", "badge badge-sucess");
+                        } else {
+                            $("#city-uv-index").attr("class", "badge badge-success");
                         }
+
+                        populate5Day(oneCall);
                     });
                 }
             });
-
-
-
         }
         // function getCityData(citySearch) {
         //     var storedCityData = JSON.parse(localStorage.getItem(citySearch));
@@ -237,9 +256,9 @@
         // }
 
         //run this every time the page loads - either pull up most recent city, or default city
-        if(recentCities === null){
+        if (recentCities === null) {
             getCityData("Atlanta");
-        }else{
+        } else {
             getCityData(recentCities[0]);
         }
 
@@ -251,7 +270,7 @@
             }
         })
 
-        $("#city-buttons").on("click", function(event){ // on city quick button
+        $("#city-buttons").on("click", function (event) { // on city quick button
             event.preventDefault();
             getCityData(event.target.innerHTML.toLowerCase()); // get city data
         });
