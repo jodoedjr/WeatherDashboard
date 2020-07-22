@@ -10,7 +10,27 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="Assets/fontawesome-free-5.14.0-web/css/all.min.css">
+    <style>
+        .uv-extreme {
+            background-color: fuchsia;
+        }
 
+        .uv-very-high {
+            background-color: red;
+        }
+
+        .uv-high {
+            background-color: orange;
+        }
+
+        .uv-moderate {
+            background-color: yellow;
+        }
+
+        .uv-low {
+            background-color: greenyellow;
+        }
+    </style>
     <title>Your Weather Dashboard!</title>
 </head>
 
@@ -64,6 +84,15 @@
                 <div class="card-deck">
                     <div class="card text-white bg-primary mb-3">
                         <div class="card-body">
+                            <h5 id="day-0-date" class="card-title">8/16/2019</h5>
+                            <img id="day-0-icon" src="Assets/weather-icons/sunny.png"
+                                style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
+                            <p class="card-text">Temp: <span id="day-0-temp">86.84 degF</span></p>
+                            <p class="card-text">Humidity: <span id="day-0-humidity">43%</span></p>
+                        </div>
+                    </div>
+                    <div class="card text-white bg-primary mb-3">
+                        <div class="card-body">
                             <h5 id="day-1-date" class="card-title">8/16/2019</h5>
                             <img id="day-1-icon" src="Assets/weather-icons/sunny.png"
                                 style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
@@ -98,15 +127,6 @@
                             <p class="card-text">Humidity: <span id="day-4-humidity">43%</span></p>
                         </div>
                     </div>
-                    <div class="card text-white bg-primary mb-3">
-                        <div class="card-body">
-                            <h5 id="day-5-date" class="card-title">8/16/2019</h5>
-                            <img id="day-5-icon" src="Assets/weather-icons/sunny.png"
-                                style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
-                            <p class="card-text">Temp: <span id="day-5-temp">86.84 degF</span></p>
-                            <p class="card-text">Humidity: <span id="day-5-humidity">43%</span></p>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -133,10 +153,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script type="text/javascript">
 
+        // global vars
         var recentCities = JSON.parse(localStorage.getItem("recentCities")); // array for populating the recent cities buttons
 
-        function populateData(response) { // populate city name, date, temp, humidity, wind speed, and uv index
-            var day = moment.unix(response.dt);
+
+        function populateData(response) { // populate city name, date, temp, humidity, wind speed, and uv index        
+            var day = moment.unix(response.dt); // get response's unix utc time
+            day.add(response.timezone, 'seconds'); // add the timezone offset from the openweather map reponse to get current local date
             $("#city-name").text(response.name + " (" + (day._d.getMonth() + 1) + "/" + day._d.getDate() + "/" + day._d.getFullYear() + ")");
             $("#city-temp").text(((response.main.temp - 273.15) * 9 / 5 + 32).toFixed(1) + "°F"); // convert kelvin to F
             $("#city-humidity").text(parseInt(response.main.humidity) + "%");
@@ -144,36 +167,98 @@
             $("#city-icon").attr("src", "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png");
         }
 
-        function populate5Day(oneCall) {
-            //next 5 day forecast
-            var dailyForecasts = oneCall.daily;
-            // <div class="card-body">
-            //     <h5 id="day-1-date" class="card-title">8/16/2019</h5>
-            //     <img id="day-1-icon" src="Assets/weather-icons/sunny.png"
-            //         style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
-            //     <p class="card-text">Temp: <span id="day-1-temp">86.84 degF</span></p>
-            //     <p class="card-text">Humidity: <span id="day-1-humidity">43%</span></p>
-            // </div>
-            for (var i = 1; i <= 5; i++) {//loop through each day's forecast and populate
-                var day = moment.unix(dailyForecasts[i - 1].dt);
-                $("#day-" + i + "-date").text((day._d.getMonth() + 1) + "/" + day._d.getDate() + "/" + day._d.getFullYear());
-                $("#day-" + i + "-icon").attr("src", "http://openweathermap.org/img/wn/" + dailyForecasts[i - 1].weather[0].icon + "@2x.png")
-                $("#day-" + i + "-temp").text(((dailyForecasts[i - 1].temp.day - 273.15) * 9 / 5 + 32).toFixed("2") + "°F");
-                $("#day-" + i + "-humidity").text(dailyForecasts[i - 1].humidity + "%");
+
+        function populateUV(oneCall) { // populate and style current UV index
+            $("#city-uv-index").text(oneCall.current.uvi);
+            if (oneCall.current.uvi >= 11) {// extreme
+                $("#city-uv-index").attr("class", "badge uv-extreme"); // purple
+            } else if (oneCall.current.uvi >= 8) {// very high
+                $("#city-uv-index").attr("class", "badge uv-very-high"); // red
+            } else if (oneCall.current.uvi >= 6) {// high
+                $("#city-uv-index").attr("class", "badge uv-high"); // orange
+            } else if (oneCall.current.uvi >= 3) {// moderate
+                $("#city-uv-index").attr("class", "badge uv-moderate"); // yellow
+            } else {// low 
+                $("#city-uv-index").attr("class", "badge uv-low"); // green
             }
         }
 
-        function populateCityButtons(storedRecentCities) {
+        function populate5Day(oneCall) {// populate info for the 5 day forecast
+            //next 5 day forecast
+
+            var dailyForecasts = oneCall.daily;
+            var currentTime = moment();
+            var fcTime = moment.unix(dailyForecasts[0].dt);
+            var forecastOffset = 0;
+            if (currentTime._d.getDate() == fcTime._d.getDate()) {
+                forecastOffset = 1;
+            } else {
+                forecastOffset = 0;
+            }
+
+            for (var i = 0; i <= 4; i++) {//loop through each day's forecast and populate
+                var forecast = dailyForecasts[i + forecastOffset];
+                var date = moment.unix(forecast.dt); // get moment date object //removed i -1
+
+                date.add(oneCall.timezone_offset, 'seconds'); // add/substract the timezone offset to get local time
+                //moment object .getMonth() returns a number 0-11 cooresponding to the current month
+                $("#day-" + i + "-date").text((date._d.getMonth() + 1) + "/" + date._d.getDate() + "/" + date._d.getFullYear());
+                //openweathermap provides icons for current weather conditions
+                $("#day-" + i + "-icon").attr("src", "http://openweathermap.org/img/wn/" + forecast.weather[0].icon + "@2x.png"); // del i-1
+                // temp forecast is given in Kelvin: conversion is K - 273.15 * 9/5 + 32
+                $("#day-" + i + "-temp").text(((forecast.temp.day - 273.15) * 9 / 5 + 32).toFixed("2") + "°F"); // del i -1
+                $("#day-" + i + "-humidity").text(forecast.humidity + "%");// del i -1
+
+            }
+        }
+
+        function populateCityButtons(cityName) {
+            //display city weather quick buttons in button area
+            // get local storage version of recent cities
+            RecentCities = JSON.parse(localStorage.getItem("recentCities"));
+            //prepend the name of the city from this ajax call
+            if (RecentCities === null) {// if no locally stored values, set to empty array
+                RecentCities = [];
+            }
+            RecentCities.unshift(cityName); //prepend the most recent response to the begining of the recent cities array
+            // fun hashtable implmentation from https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
+            //filter the array of recent cities for duplicates
+            var seen = {};
+            RecentCities = RecentCities.filter(function (item) {
+                return seen.hasOwnProperty(item) ? false : (seen[item] = true);
+            });
+            //store recent cities back in local storage
+            localStorage.setItem("recentCities", JSON.stringify(RecentCities));
             // <button type="button" class="btn btn-outline-secondary btn-lg btn-block text-left"
             //         style="margin-top: -0px;">Austin</button>
             $("#city-buttons").empty();
-            for (city of storedRecentCities) { // for each city in the input array
+            for (city of RecentCities) { // for each city in the input array
                 var newButton = $("<button>").attr("type", "button").attr("class", "btn btn-outline-secondary btn-lg btn-block text-left").attr("style", "margin-top: 1px;").text(city);
                 $("#city-buttons").append(newButton);
             }
         }
 
         function getCityData(citySearch) {
+            // determine if there is recent data (< 10 min old) for requested data stored locally
+            var storedCityInfo = JSON.parse(localStorage.getItem(citySearch + "-info"));
+            if (storedCityInfo != null) { // if there is an entry for the city
+                //check the age of the info
+                var storedTime = moment.unix(storedCityInfo.dt);
+                var currentTime = moment();
+                //console.log("Age of data: " + currentTime.diff(storedTime, 'minutes'));
+                if (currentTime.diff(storedTime, 'minutes') <= 10) {
+                    var storedOneCallData = JSON.parse(localStorage.getItem(citySearch + "-onecall"));
+                    if (storedOneCallData != null) {
+                        //if stored data exists and is recent
+                        populateData(storedCityInfo);
+                        populateCityButtons(storedCityInfo.name);
+                        populateUV(storedOneCallData);
+                        populate5Day(storedOneCallData);
+                        return; // return to avoid unnecessary ajax calls
+                    }
+                }// else // make a new ajax request for more recent data
+            } // else if no entry, make a new ajax request for more recent data
+
             //call ajax and retrieve weather data for city
             //display city data on dashboard
             var apiKey = "d85c0fa84df93dc9e2c51749f4580b7e";
@@ -184,25 +269,9 @@
             }).then(function (response) {
                 //if response is good
                 if (response.hasOwnProperty("name")) {
-                    //localStorage.setItem(response.name, JSON.stringify(response));
-                    populateData(response);
-                    //display city weather quick buttons in button area
-                    // get local storage version of recent cities
-                    var storedRecentCities = JSON.parse(localStorage.getItem("recentCities"));
-                    //prepend the name of the city from this ajax call
-                    if (storedRecentCities === null) {// if no locally stored values, set to empty array
-                        storedRecentCities = [];
-                    }
-                    storedRecentCities.unshift(response.name); //prepend the most recent response to the begining of the recent cities array
-                    // fun hashtable implmentation from https://stackoverflow.com/questions/9229645/remove-duplicate-values-from-js-array
-                    //filter the array of recent cities for duplicates
-                    var seen = {};
-                    storedRecentCities = storedRecentCities.filter(function (item) {
-                        return seen.hasOwnProperty(item) ? false : (seen[item] = true);
-                    });
-                    //store recent cities back in local storage
-                    localStorage.setItem("recentCities", JSON.stringify(storedRecentCities));
-                    populateCityButtons(storedRecentCities); // draw city buttons
+
+                    populateData(response); // populate current weather fields
+                    populateCityButtons(response.name); // draw city buttons
 
                     //use lat and lon from current weather ajax call to get onecall info for UV index and 5 day forcast 
                     //"https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&appid={YOUR API KEY}"
@@ -211,51 +280,22 @@
                         url: queryURL,
                         method: "GET"
                     }).then(function (oneCall) {
-                        $("#city-uv-index").text(oneCall.current.uvi);
-                        if (oneCall.current.uvi >= 8) {
-                            $("#city-uv-index").attr("class", "badge badge-danger");
-                        } else if (oneCall.value > 3) {
-                            $("#city-uv-index").attr("class", "badge badge-warning");
-                        } else {
-                            $("#city-uv-index").attr("class", "badge badge-success");
-                        }
+                        if (oneCall.hasOwnProperty("current")) {
+                            populateUV(oneCall); // populate day UV index
+                            populate5Day(oneCall); // populate 5 day area
 
-                        populate5Day(oneCall);
+                            //store openWeatherMap responses for later use
+                            localStorage.setItem(citySearch.toLowerCase() + "-info", JSON.stringify(response));
+                            localStorage.setItem(citySearch.toLowerCase() + "-onecall", JSON.stringify(oneCall));
+                        }
                     });
                 }
             });
         }
-        // function getCityData(citySearch) {
-        //     var storedCityData = JSON.parse(localStorage.getItem(citySearch));
-        //     if (!(storedCityData === null)) {//is there a stored record in city?
-        //         var storedDate = moment.unix(storedCityData.dt); // get stored data time
-        //         var currentDate = moment.utc(); // get current utc time
-        //         if (currentDate.diff(storedDate, "minutes") <= 10) { //find the difference in minutes between the stored data time stamp and the current time
-        //             //if data is less than 10 minutes old, use the stored data
-        //             populateData(storedCityData); // populate the dashboard with stored city data
-        //             return;
-        //         }
-        //     }
-        //     //program pointer will reach this point if no data exist locally, or if the data is older than 10 min
-        //     //therfore, call new data
-        //     var apiKey = "d85c0fa84df93dc9e2c51749f4580b7e";
-        //     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&appid=d85c0fa84df93dc9e2c51749f4580b7e";
-        //     $.ajax({
-        //         url: queryURL,
-        //         method: "GET"
-        //     }).then(function (response) {
-        //         console.log("AJAX RESPONSE");
-        //         console.log(response);
-        //         //if response is good
-        //         if (response.hasOwnProperty("name")) {
-        //             localStorage.setItem(response.name, JSON.stringify(response));
-        //             populateData(response);
 
-        //         }
-        //     });
-        // }
-
+        //
         //run this every time the page loads - either pull up most recent city, or default city
+        //
         if (recentCities === null) {
             getCityData("Atlanta");
         } else {
