@@ -1,4 +1,6 @@
-# Weather Dashboard using Open Weather Map Current Weather Data and One Call API
+# Weather Dashboard 
+
+## Weather Dashboard using Open Weather Map Current Weather Data and One Call API
 
 This website uses [OpenWeather API](https://openweathermap.org/api) to retrieve weather data for cities.
 Users can input the name of a city and recive current weather information (current conditions icon, temperature, humidity, windspeed, UV index) and a daily forecast in that city for the next 5 days.
