@@ -16,7 +16,8 @@ Pressing the 'X' button next to the city search bar will clear the button quick 
 
 ## Links
 
-![weather dashboard](Assets\websiteCapture.PNG)
+![weather dashboard](Assets/websiteCapture.PNG)
+
 https://jodoedjr.github.io/WeatherDashboard/
 
 https://github.com/jodoedjr/WeatherDashboard
