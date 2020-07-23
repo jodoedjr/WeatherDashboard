@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="Assets/fontawesome-free-5.14.0-web/css/all.min.css">
+    <!-- style for UV Index badges -->
     <style>
         .uv-extreme {
             background-color: fuchsia;
@@ -35,12 +36,13 @@
 </head>
 
 <body>
-
+    <!-- nav bar header -->
     <nav class="navbar navbar-dark bg-dark">
         <div class="col-sm-12 text-center h1" style="color: white;">Weather Dashboard</div>
         <!-- navbar-text mb-0-->
     </nav>
 
+    <!-- city search bar -->
     <div class="row">
         <div class="col-sm-3">
             <span class="h4" style="margin-left: 10px;">Search for a City:</span>
@@ -48,7 +50,10 @@
                 <input id="city-search" class="form-control mr-sm-2" type="search" placeholder="" aria-label="Search">
                 <button id="btn-search" class="btn btn-primary " type="submit"><i class="fas fa-search"
                         style="color:white;"></i></button>
+                <button id="btn-clear" class="btn btn-primary " type="submit" style="margin-left: 5px;">X</button>
+                <!-- <i class="fas fa-search" style="color:white;"></i></button> -->
             </form>
+            <!-- city quick buttons -->
             <div id="city-buttons" style="margin-left: 10px; margin-top: 20px;">
                 <!-- <button type="button" class="btn btn-outline-secondary btn-lg btn-block text-left"
                     style="margin-top: -0px;">Austin</button> -->
@@ -60,23 +65,24 @@
                     style="margin-top: -0px;">Orlando</button> -->
             </div>
         </div>
+        <!-- weather data area -->
         <div class="col-sm-9">
             <div class="row" style="margin-left: 20px;">
                 <div class="card" style=" margin-top: 20px;">
-                    <!--width: 100%; -->
                     <div class="card-body">
+                        <!-- current weather data -->
                         <span id="city-name" class="h2">Atlanta (8/15/2019)</span>
-                        <img id="city-icon" src="Assets/weather-icons/sunny.png"
+                        <img id="city-icon"
                             style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
                         <p class="card-text">Temperature: <span id="city-temp">90.9 degF</span></p>
                         <p class="card-text">Humidity: <span id="city-humidity">41%</span></p>
                         <p class="card-text">Wind Speed: <span id="city-wind-speed">4.7 MPH</span></p>
                         <p class="card-text">UV Index: <span id="city-uv-index" class="badge badge-danger"
                                 style="line-height: 20px; width: 40px; margin-bottom: 15px">9.49</span></p>
-
                     </div>
                 </div>
             </div>
+            <!-- 5 day forecast -->
             <div class="row" style="margin-left: 20px;">
                 <span class="h3" style="margin-top: 20px;">5-Day Forecast:</span>
             </div>
@@ -84,8 +90,9 @@
                 <div class="card-deck">
                     <div class="card text-white bg-primary mb-3">
                         <div class="card-body">
+                            <!-- day 0 (tomorrow) -->
                             <h5 id="day-0-date" class="card-title">8/16/2019</h5>
-                            <img id="day-0-icon" src="Assets/weather-icons/sunny.png"
+                            <img id="day-0-icon"
                                 style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
                             <p class="card-text">Temp: <span id="day-0-temp">86.84 degF</span></p>
                             <p class="card-text">Humidity: <span id="day-0-humidity">43%</span></p>
@@ -93,8 +100,9 @@
                     </div>
                     <div class="card text-white bg-primary mb-3">
                         <div class="card-body">
+                            <!-- day 1 -->
                             <h5 id="day-1-date" class="card-title">8/16/2019</h5>
-                            <img id="day-1-icon" src="Assets/weather-icons/sunny.png"
+                            <img id="day-1-icon"
                                 style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
                             <p class="card-text">Temp: <span id="day-1-temp">86.84 degF</span></p>
                             <p class="card-text">Humidity: <span id="day-1-humidity">43%</span></p>
@@ -102,8 +110,9 @@
                     </div>
                     <div class="card text-white bg-primary mb-3">
                         <div class="card-body">
+                            <!-- day 2 -->
                             <h5 id="day-2-date" class="card-title">8/16/2019</h5>
-                            <img id="day-2-icon" src="Assets/weather-icons/sunny.png"
+                            <img id="day-2-icon"
                                 style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
                             <p class="card-text">Temp: <span id="day-2-temp">86.84 degF</span></p>
                             <p class="card-text">Humidity: <span id="day-2-humidity">43%</span></p>
@@ -111,8 +120,9 @@
                     </div>
                     <div class="card text-white bg-primary mb-3">
                         <div class="card-body">
+                            <!-- day 3 -->
                             <h5 id="day-3-date" class="card-title">8/16/2019</h5>
-                            <img id="day-3-icon" src="Assets/weather-icons/sunny.png"
+                            <img id="day-3-icon"
                                 style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
                             <p class="card-text">Temp: <span id="day-3-temp">86.84 degF</span></p>
                             <p class="card-text">Humidity: <span id="day-3-humidity">43%</span></p>
@@ -120,8 +130,9 @@
                     </div>
                     <div class="card text-white bg-primary mb-3">
                         <div class="card-body">
+                            <!-- day 4 -->
                             <h5 id="day-4-date" class="card-title">8/16/2019</h5>
-                            <img id="day-4-icon" src="Assets/weather-icons/sunny.png"
+                            <img id="day-4-icon"
                                 style="height: 50px; width: 50px; margin-top: 10px; margin-bottom: 20px;"></img>
                             <p class="card-text">Temp: <span id="day-4-temp">86.84 degF</span></p>
                             <p class="card-text">Humidity: <span id="day-4-humidity">43%</span></p>
@@ -132,10 +143,6 @@
 
         </div>
     </div>
-
-
-
-
 
 
     <!-- Optional JavaScript -->
@@ -150,14 +157,17 @@
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
         crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery.js"></script>
+    <!-- moment.js for unix timestamps -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+
     <script type="text/javascript">
 
         // global vars
         var recentCities = JSON.parse(localStorage.getItem("recentCities")); // array for populating the recent cities buttons
+        var defaultCity = "Atlanta"; // default city
 
-
-        function populateData(response) { // populate city name, date, temp, humidity, wind speed, and uv index        
+        // populate city name, date, temp, humidity, wind speed, and uv index        
+        function populateData(response) {
             var day = moment.unix(response.dt); // get response's unix utc time
             day.add(response.timezone, 'seconds'); // add the timezone offset from the openweather map reponse to get current local date
             $("#city-name").text(response.name + " (" + (day._d.getMonth() + 1) + "/" + day._d.getDate() + "/" + day._d.getFullYear() + ")");
@@ -167,8 +177,8 @@
             $("#city-icon").attr("src", "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png");
         }
 
-
-        function populateUV(oneCall) { // populate and style current UV index
+        // populate and style current UV index
+        function populateUV(oneCall) {
             $("#city-uv-index").text(oneCall.current.uvi);
             if (oneCall.current.uvi >= 11) {// extreme
                 $("#city-uv-index").attr("class", "badge uv-extreme"); // purple
@@ -183,14 +193,14 @@
             }
         }
 
-        function populate5Day(oneCall) {// populate info for the 5 day forecast
+        // populate info for the 5 day forecast
+        function populate5Day(oneCall) {
             //next 5 day forecast
-
             var dailyForecasts = oneCall.daily;
-            var currentTime = moment();
-            var fcTime = moment.unix(dailyForecasts[0].dt);
+            var currentTime = moment();// get current time
+            var fcTime = moment.unix(dailyForecasts[0].dt); // get time of first (0 index) daily forecast
             var forecastOffset = 0;
-            if (currentTime._d.getDate() == fcTime._d.getDate()) {
+            if (currentTime._d.getDate() == fcTime._d.getDate()) { // if date of first daily forecast matches current day, use next day
                 forecastOffset = 1;
             } else {
                 forecastOffset = 0;
@@ -199,7 +209,6 @@
             for (var i = 0; i <= 4; i++) {//loop through each day's forecast and populate
                 var forecast = dailyForecasts[i + forecastOffset];
                 var date = moment.unix(forecast.dt); // get moment date object //removed i -1
-
                 date.add(oneCall.timezone_offset, 'seconds'); // add/substract the timezone offset to get local time
                 //moment object .getMonth() returns a number 0-11 cooresponding to the current month
                 $("#day-" + i + "-date").text((date._d.getMonth() + 1) + "/" + date._d.getDate() + "/" + date._d.getFullYear());
@@ -245,10 +254,9 @@
                 //check the age of the info
                 var storedTime = moment.unix(storedCityInfo.dt);
                 var currentTime = moment();
-                //console.log("Age of data: " + currentTime.diff(storedTime, 'minutes'));
-                if (currentTime.diff(storedTime, 'minutes') <= 10) {
-                    var storedOneCallData = JSON.parse(localStorage.getItem(citySearch + "-onecall"));
-                    if (storedOneCallData != null) {
+                if (currentTime.diff(storedTime, 'minutes') <= 10) { // difference between stored timestamp and current time is less than or equal to 10 min
+                    var storedOneCallData = JSON.parse(localStorage.getItem(citySearch + "-onecall")); // also retrive oneCall data
+                    if (storedOneCallData != null) {// if that isn't null
                         //if stored data exists and is recent
                         populateData(storedCityInfo);
                         populateCityButtons(storedCityInfo.name);
@@ -257,18 +265,22 @@
                         return; // return to avoid unnecessary ajax calls
                     }
                 }// else // make a new ajax request for more recent data
-            } // else if no entry, make a new ajax request for more recent data
+            } // else if no entry, make a new ajax request for data
 
             //call ajax and retrieve weather data for city
             //display city data on dashboard
             var apiKey = "d85c0fa84df93dc9e2c51749f4580b7e";
-            var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&appid=d85c0fa84df93dc9e2c51749f4580b7e";
-            $.ajax({
+            var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&appid=" + apiKey;
+            $.ajax({ // ajax call to open weather map current weather
                 url: queryURL,
-                method: "GET"
-            }).then(function (response) {
-                //if response is good
-                if (response.hasOwnProperty("name")) {
+                method: "GET",
+                error: function (jqXHR, textStatus, errorThrown) { // error handling
+                    if (jqXHR.status == 404 || errorThrown == 'Not Found') { // if city not found
+                        alert("\"" + citySearch + "\" not found. Please try another city name.");
+                    }
+                }
+            }).then(function (response) { // ajax response
+                if (response.hasOwnProperty("name")) {// data has a name property
 
                     populateData(response); // populate current weather fields
                     populateCityButtons(response.name); // draw city buttons
@@ -278,15 +290,15 @@
                     var queryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + response.coord.lat + "&lon=" + response.coord.lon + "&appid=" + apiKey;
                     $.ajax({
                         url: queryURL,
-                        method: "GET"
+                        method: "GET",
                     }).then(function (oneCall) {
-                        if (oneCall.hasOwnProperty("current")) {
+                        if (oneCall.hasOwnProperty("current")) { // data has a current property
                             populateUV(oneCall); // populate day UV index
                             populate5Day(oneCall); // populate 5 day area
 
                             //store openWeatherMap responses for later use
-                            localStorage.setItem(citySearch.toLowerCase() + "-info", JSON.stringify(response));
-                            localStorage.setItem(citySearch.toLowerCase() + "-onecall", JSON.stringify(oneCall));
+                            localStorage.setItem(citySearch.toLowerCase() + "-info", JSON.stringify(response)); //"atlanta-info"
+                            localStorage.setItem(citySearch.toLowerCase() + "-onecall", JSON.stringify(oneCall)); //"atlanta-onecall"
                         }
                     });
                 }
@@ -294,10 +306,12 @@
         }
 
         //
+        //
         //run this every time the page loads - either pull up most recent city, or default city
         //
+        //
         if (recentCities === null) {
-            getCityData("Atlanta");
+            getCityData(defaultCity);
         } else {
             getCityData(recentCities[0]);
         }
@@ -308,7 +322,13 @@
             if (citySearch != "") {
                 getCityData(citySearch); // get city data
             }
-        })
+        });
+
+        $("#btn-clear").on("click", function (event) { // clear city entries
+            event.preventDefault();
+            localStorage.clear(); // empty out local storage
+            getCityData("Atlanta"); // display default city
+        });
 
         $("#city-buttons").on("click", function (event) { // on city quick button
             event.preventDefault();
